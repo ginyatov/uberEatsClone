@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:13-alpine
+    hostname: ${DB_HOST_NAME}
+    ports:
+      - ${DB_PORT}:5432
+    environment:
+      POSTGRES_USER: ${DB_USER_NAME}
+      POSTGRES_PASSWORD: ${DB_USER_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      - backend
+  postgres-test:
+    image: postgres:13-alpine
+    hostname: ${DB_HOST_NAME}
+    ports:
+      - 5434:5432
+    environment:
+      POSTGRES_USER: ${DB_USER_NAME}
+      POSTGRES_PASSWORD: ${DB_USER_PASSWORD}
+      POSTGRES_DB: "UBER_GINYATOV_DB_TEST"
+    restart: unless-stopped
+    networks:
+      - backend
+
+volumes:
+  postgres-data:
+
+networks:
+  backend:
